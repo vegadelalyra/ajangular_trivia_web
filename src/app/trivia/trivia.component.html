@@ -3,25 +3,27 @@
     <p>
       <b>{{ question.category }}</b>
     </p>
-    <label
-      id="question-radio-group-label"
-      [innerHTML]="question.question"
-    ></label>
-    <mat-radio-group
-      aria-labelledby="question-radio-group-label"
-      class="question-radio-group"
-      [(ngModel)]="answer"
-    >
-      <mat-radio-button
-        class="question-radio-button"
-        *ngFor="let answer of question.answers"
-        [value]="answer"
-      >
-        {{ answer.answer }}
-      </mat-radio-button>
-    </mat-radio-group>
+    <p [innerHTML]="question.question"></p>
 
-    <div *ngIf="answer">
+    <!-- Display answer options -->
+    <div
+      *ngIf="question.answers && question.answers.length > 0"
+      class="question-radio-group"
+    >
+      <label *ngFor="let option of question.answers">
+        <input
+          type="radio"
+          [(ngModel)]="answer"
+          [value]="option"
+          name="answerOption"
+          class="question-radio-button"
+        />
+        {{ option.answer }}
+      </label>
+    </div>
+
+    <!-- Display correct or incorrect message -->
+    <div *ngIf="answer !== null">
       <div *ngIf="answer.is_correct; else incorrect">
         <p>Correct!</p>
       </div>

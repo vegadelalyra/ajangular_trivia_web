@@ -1,4 +1,8 @@
 <div id="question-container">
+  <div id="question-header">
+    <h3>Question {{ questionNumber + 1 }}</h3>
+    <h3 class="score">Score: {{ correctAnswers }}/{{ questionNumber }}</h3>
+  </div>
   <ng-container *ngIf="question; else quizComplete">
     <p>
       <b>{{ question.category }}</b>
@@ -13,7 +17,9 @@
       <label *ngFor="let option of question.answers">
         <input
           type="radio"
+          [disabled]="disableRadioButtons"
           [(ngModel)]="answer"
+          (change)="answerSelected($event)"
           [value]="option"
           name="answerOption"
           class="question-radio-button"
@@ -31,6 +37,15 @@
         <p>Wrong! The correct answer is {{ getCorrectAnswer() }}</p>
       </ng-template>
     </div>
+    <button
+      mat-flat-button
+      color="primary"
+      id="next-button"
+      [disabled]="disableNextButton"
+      (click)="getNextQuestion()"
+    >
+      Next Question
+    </button>
   </ng-container>
   <ng-template #quizComplete>
     <p>We're all out of questions!</p>
